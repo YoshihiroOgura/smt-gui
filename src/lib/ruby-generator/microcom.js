@@ -30,7 +30,7 @@ export default function (Generator) {
         const num2 = Generator.valueToCode(block, 'NUM2', Generator.ORDER_NONE) || null;
         const num3 = Generator.valueToCode(block, 'NUM3', Generator.ORDER_NONE) || null;
         const num4 = Generator.valueToCode(block, 'NUM4', Generator.ORDER_NONE) || null;
-        return `pwm${num1} = PWM.new( ${num1}, timer:${num2}, channel:${num3}, frequency:${num4} )\n`;
+        return `pwm${num1} = PWM.new( ${num1}, frequency:${num4} )\n`;
     };
 
     Generator.microcom_pwm_duty = function (block) {
