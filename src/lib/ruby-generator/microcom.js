@@ -42,13 +42,13 @@ export default function (Generator) {
     Generator.microcom_pwm_frequency = function (block) {
         const num1 = Generator.valueToCode(block, 'NUM1', Generator.ORDER_NONE) || null;
         const value = Generator.valueToCode(block, 'VALUE', Generator.ORDER_NONE) || null;
-        return `pwm${num1}.freq( ${value}.to_i )\n`;
+        return `pwm${num1}.freq( (${value}).to_i )\n`;
     };
 
     Generator.microcom_pwm_pulse = function (block) {
         const num1 = Generator.valueToCode(block, 'NUM1', Generator.ORDER_NONE) || null;
         const value = Generator.valueToCode(block, 'VALUE', Generator.ORDER_NONE) || null;
-        return `pwm${num1}.pulse_width_us( ${value}.to_i )\n`;
+        return `pwm${num1}.pulse_width_us( ( ${value} ).to_i )\n`;
     };
     
     Generator.microcom_adc_init = function (block) {
@@ -96,7 +96,7 @@ export default function (Generator) {
     Generator.microcom_uart_init = function (block) {
         const text = Generator.valueToCode(block, 'TEXT', Generator.ORDER_NONE) || null;
         const num = Generator.valueToCode(block, 'NUM', Generator.ORDER_NONE) || null;
-        return `uart${text} = UART.new( ${text}, ${num} )\n`;
+        return `uart${text} = UART.new( ${text}, baudrate:${num} )\n`;
     };
 
     Generator.microcom_uart_write = function (block) {
@@ -107,7 +107,18 @@ export default function (Generator) {
 
     Generator.microcom_uart_read = function (block) {
         const text = Generator.valueToCode(block, 'TEXT', Generator.ORDER_NONE) || null;
+        const num = Generator.valueToCode(block, 'NUM', Generator.ORDER_NONE) || null;
+        return [`uart${text}.read( ${num} )`, Generator.ORDER_ATOMIC];
+    };
+
+    Generator.microcom_uart_gets = function (block) {
+        const text = Generator.valueToCode(block, 'TEXT', Generator.ORDER_NONE) || null;
         return [`uart${text}.gets()`, Generator.ORDER_ATOMIC];
+    };
+
+    Generator.microcom_uart_clear_rx_buffer = function (block) {
+        const text = Generator.valueToCode(block, 'TEXT', Generator.ORDER_NONE) || null;
+        return `uart${text}.clear_rx_buffer()\n`;
     };
 
     Generator.microcom_ms_sleep = function (block) {
